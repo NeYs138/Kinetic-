@@ -2,377 +2,333 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Aurora — Creative Developer</title>
+<title>Kinetic — Designer Portfolio</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: #0a0a0f;
-  color: #fff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #f2f0eb;
+  color: #111;
   overflow-x: hidden;
-  min-height: 100vh;
 }
 
-/* Плавающие градиентные пятна */
-.blob {
-  position: fixed;
+/* Кастомный курсор */
+.cursor {
+  width: 20px; height: 20px;
+  border: 2px solid #111;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
-  z-index: 0;
-  animation: float 20s ease-in-out infinite;
-}
-.blob1 { width: 500px; height: 500px; background: #6a5acd; top: -100px; left: -100px; }
-.blob2 { width: 400px; height: 400px; background: #ff6b9d; bottom: -100px; right: -100px; animation-delay: -7s; }
-.blob3 { width: 350px; height: 350px; background: #00d9ff; top: 40%; left: 50%; animation-delay: -14s; }
-
-@keyframes float {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33% { transform: translate(60px,-80px) scale(1.1); }
-  66% { transform: translate(-40px,60px) scale(0.9); }
-}
-
-/* Сетка-оверлей */
-body::before {
-  content: '';
   position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  z-index: 1;
   pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, background 0.3s, border-color 0.3s;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
 }
+.cursor.grow { transform: translate(-50%,-50%) scale(3); background: #111; border-color: transparent; }
 
-.container {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 30px;
-}
-
-nav {
+/* Хедер */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 0;
-  animation: slideDown 1s cubic-bezier(0.16,1,0.3,1);
+  padding: 24px 40px;
+  z-index: 100;
+  mix-blend-mode: difference;
+  color: #fff;
 }
-.logo {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  background: linear-gradient(135deg, #fff, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+.menu-btn {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-nav ul { display: flex; gap: 40px; list-style: none; }
-nav a {
-  color: rgba(255,255,255,0.6);
-  text-decoration: none;
-  font-size: 15px;
-  position: relative;
-  transition: color 0.3s;
+.menu-btn .lines { display: flex; flex-direction: column; gap: 4px; }
+.menu-btn .lines span {
+  width: 24px; height: 2px; background: currentColor;
+  transition: transform 0.3s;
 }
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -6px; left: 0;
-  width: 0; height: 2px;
-  background: linear-gradient(90deg, #6a5acd, #ff6b9d);
-  transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
-}
-nav a:hover { color: #fff; }
-nav a:hover::after { width: 100%; }
+.menu-btn:hover .lines span:first-child { transform: translateX(5px); }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Hero */
+/* Hero с огромным текстом */
 .hero {
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 100px;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
 }
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 18px;
-  border-radius: 100px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  font-size: 13px;
-  width: fit-content;
-  margin-bottom: 30px;
-  animation: fadeUp 1s 0.2s cubic-bezier(0.16,1,0.3,1) backwards;
-}
-.hero-tag .dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 10px #4ade80;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.hero h1 {
-  font-size: clamp(48px, 9vw, 120px);
+.hero .big {
+  font-size: clamp(70px, 18vw, 260px);
   font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -4px;
-  margin-bottom: 30px;
+  line-height: 0.82;
+  letter-spacing: -8px;
+  text-transform: uppercase;
 }
-.hero h1 .line {
+.hero .big .word {
   display: block;
   overflow: hidden;
 }
-.hero h1 .line span {
+.hero .big .word span {
   display: inline-block;
-  animation: revealUp 1.2s cubic-bezier(0.16,1,0.3,1) backwards;
+  animation: slideUp 1.4s cubic-bezier(0.16,1,0.3,1) backwards;
 }
-.hero h1 .line:nth-child(1) span { animation-delay: 0.3s; }
-.hero h1 .line:nth-child(2) span { animation-delay: 0.45s; }
+.hero .big .word:nth-child(1) span { animation-delay: 0.1s; }
+.hero .big .word:nth-child(2) span { animation-delay: 0.25s; font-style: italic; color: #ff4d00; }
+.hero .big .word:nth-child(3) span { animation-delay: 0.4s; }
 
-.gradient-text {
-  background: linear-gradient(120deg, #a78bfa, #ff6b9d, #00d9ff);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 6s ease infinite;
-}
-@keyframes gradientShift {
-  0%,100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+@keyframes slideUp {
+  from { transform: translateY(110%) rotate(5deg); }
+  to { transform: translateY(0) rotate(0); }
 }
 
-@keyframes revealUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero p {
-  max-width: 500px;
-  font-size: 18px;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.6;
-  margin-bottom: 40px;
-  animation: fadeUp 1s 0.7s cubic-bezier(0.16,1,0.3,1) backwards;
-}
-
-.btns { display: flex; gap: 16px; animation: fadeUp 1s 0.9s cubic-bezier(0.16,1,0.3,1) backwards; }
-.btn {
-  padding: 16px 32px;
-  border-radius: 100px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-  position: relative;
-  overflow: hidden;
-}
-.btn-primary {
-  background: #fff;
-  color: #0a0a0f;
-}
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255,255,255,0.3); }
-.btn-ghost {
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-.btn-ghost:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
-.btn .arrow { transition: transform 0.3s; }
-.btn:hover .arrow { transform: translateX(5px); }
-
-/* Карточки проектов */
-.projects {
-  padding: 100px 0 150px;
-}
-.section-title {
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 60px;
+.hero-info {
   display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-.card {
-  position: relative;
-  border-radius: 20px;
-  padding: 40px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 60px;
+  animation: fadeIn 1s 1s backwards;
+  gap: 40px;
+  flex-wrap: wrap;
 }
-.card::before {
+.hero-info p {
+  max-width: 380px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #555;
+}
+.hero-info .meta {
+  text-align: right;
+  font-size: 14px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Бегущая строка */
+.marquee {
+  background: #111;
+  color: #f2f0eb;
+  padding: 24px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 2px solid #111;
+  border-bottom: 2px solid #111;
+}
+.marquee-track {
+  display: inline-flex;
+  gap: 60px;
+  animation: scroll 25s linear infinite;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+}
+.marquee-track span { display: flex; align-items: center; gap: 60px; }
+.marquee .star { color: #ff4d00; }
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Секция работ */
+.work { padding: 120px 40px; }
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 60px;
+  border-bottom: 2px solid #111;
+  padding-bottom: 20px;
+}
+.work-header h2 {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+.work-header span { font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 2px; }
+
+.project {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 60px;
+  gap: 30px;
+  align-items: center;
+  padding: 40px 0;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  cursor: pointer;
+  transition: padding 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.project::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(167,139,250,0.15), transparent 40%);
-  opacity: 0;
-  transition: opacity 0.5s;
+  background: #111;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  z-index: -1;
 }
-.card:hover::before { opacity: 1; }
-.card:hover { transform: translateY(-8px); border-color: rgba(167,139,250,0.3); }
+.project:hover::before { transform: scaleY(1); }
+.project:hover { color: #f2f0eb; padding-left: 30px; padding-right: 30px; }
+.project:hover .num, .project:hover .cat { color: #f2f0eb; }
+.project:hover .arrow-proj { transform: rotate(45deg); color: #ff4d00; }
 
-.card-num {
-  font-size: 14px;
-  color: rgba(255,255,255,0.3);
-  font-family: monospace;
+.project .num { font-size: 16px; font-weight: 700; font-family: monospace; color: #999; transition: color 0.4s; }
+.project .name { font-size: clamp(24px, 3vw, 40px); font-weight: 800; letter-spacing: -1px; }
+.project .cat { font-size: 15px; color: #888; transition: color 0.4s; }
+.project .arrow-proj { font-size: 28px; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.4s; }
+
+/* Футер */
+footer {
+  padding: 100px 40px 60px;
+  background: #111;
+  color: #f2f0eb;
 }
-.card h3 {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  margin-bottom: 10px;
+footer .cta {
+  font-size: clamp(40px, 8vw, 120px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -4px;
+  margin-bottom: 60px;
 }
-.card p { color: rgba(255,255,255,0.5); font-size: 15px; line-height: 1.5; }
-.card-arrow {
+footer .cta a { color: #ff4d00; text-decoration: none; position: relative; }
+footer .cta a::after {
+  content: '';
   position: absolute;
-  top: 40px; right: 40px;
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  bottom: 10px; left: 0;
+  width: 100%; height: 6px;
+  background: #ff4d00;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
 }
-.card:hover .card-arrow {
-  background: #fff;
-  color: #0a0a0f;
-  transform: rotate(-45deg);
+footer .cta a:hover::after { transform: scaleX(1); transform-origin: left; }
+footer .foot-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 40px;
+  border-top: 1px solid #333;
+  font-size: 14px;
+  color: #888;
 }
 
 /* Scroll reveal */
 .reveal {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(60px);
   transition: all 1s cubic-bezier(0.16,1,0.3,1);
 }
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-footer {
-  text-align: center;
-  padding: 60px 0;
-  color: rgba(255,255,255,0.3);
-  font-size: 14px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
+<div class="cursor" id="cursor"></div>
 
-<div class="container">
-  <nav>
-    <div class="logo">AURORA°</div>
-    <ul>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>
+<header>
+  <div class="logo">KINETIC®</div>
+  <div class="menu-btn">Меню <div class="lines"><span></span><span></span></div></div>
+</header>
 
-  <section class="hero">
-    <div class="hero-tag"><span class="dot"></span> Доступен для проектов</div>
-    <h1>
-      <span class="line"><span>Creative</span></span>
-      <span class="line"><span class="gradient-text">Developer</span></span>
-    </h1>
-    <p>Создаю цифровые продукты с фокусом на движение, эстетику и внимание к деталям.</p>
-    <div class="btns">
-      <a href="#work" class="btn btn-primary">Смотреть работы <span class="arrow">→</span></a>
-      <a href="#" class="btn btn-ghost">Связаться</a>
+<section class="hero">
+  <div class="big">
+    <div class="word"><span>Design</span></div>
+    <div class="word"><span>In</span></div>
+    <div class="word"><span>Motion</span></div>
+  </div>
+  <div class="hero-info">
+    <p>Независимый дизайнер и арт-директор. Превращаю идеи в живые интерфейсы и визуальные истории.</p>
+    <div class="meta">
+      Based in Berlin<br>
+      Since 2018<br>
+      Available worldwide
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="projects" id="work">
-    <div class="section-title reveal">Избранные проекты</div>
-    <div class="grid">
-      <div class="card reveal">
-        <div class="card-arrow">↗</div>
-        <div class="card-num">01</div>
-        <div>
-          <h3>Nebula App</h3>
-          <p>Мобильное приложение для медитации с адаптивными звуковыми ландшафтами.</p>
-        </div>
-      </div>
-      <div class="card reveal">
-        <div class="card-arrow">↗</div>
-        <div class="card-num">02</div>
-        <div>
-          <h3>Prism Studio</h3>
-          <p>Платформа для визуального сторителлинга с интерактивными сценами.</p>
-        </div>
-      </div>
-      <div class="card reveal">
-        <div class="card-arrow">↗</div>
-        <div class="card-num">03</div>
-        <div>
-          <h3>Orbit Finance</h3>
-          <p>Финтех-дашборд с живыми графиками и микроинтеракциями.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>© 2025 Aurora — Made with motion & care</footer>
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Brand Identity <span class="star">★</span> Web Design <span class="star">★</span> Motion <span class="star">★</span> Art Direction <span class="star">★</span></span>
+    <span>Brand Identity <span class="star">★</span> Web Design <span class="star">★</span> Motion <span class="star">★</span> Art Direction <span class="star">★</span></span>
+  </div>
 </div>
 
+<section class="work">
+  <div class="work-header">
+    <h2>Selected Work</h2>
+    <span>2023 — 2025</span>
+  </div>
+
+  <div class="project reveal">
+    <div class="num">01</div>
+    <div class="name">Fluxwave</div>
+    <div class="cat">Branding / Website</div>
+    <div class="arrow-proj">↗</div>
+  </div>
+  <div class="project reveal">
+    <div class="num">02</div>
+    <div class="name">Monolith</div>
+    <div class="cat">Editorial / Art Direction</div>
+    <div class="arrow-proj">↗</div>
+  </div>
+  <div class="project reveal">
+    <div class="num">03</div>
+    <div class="name">Aether</div>
+    <div class="cat">Product / Motion</div>
+    <div class="arrow-proj">↗</div>
+  </div>
+  <div class="project reveal">
+    <div class="num">04</div>
+    <div class="name">Verve</div>
+    <div class="cat">Identity / Web</div>
+    <div class="arrow-proj">↗</div>
+  </div>
+</section>
+
+<footer>
+  <div class="cta reveal">Let's make<br>something <a href="#">great</a>.</div>
+  <div class="foot-bottom">
+    <div>hello@kinetic.studio</div>
+    <div>Instagram / Behance / LinkedIn</div>
+    <div>© 2025 Kinetic Studio</div>
+  </div>
+</footer>
+
 <script>
-// Эффект следования курсора за карточкой
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-  });
+// Кастомный курсор
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0;
+let curX = 0, curY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateCursor() {
+  curX += (mouseX - curX) * 0.15;
+  curY += (mouseY - curY) * 0.15;
+  cursor.style.left = curX + 'px';
+  cursor.style.top = curY + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, .project, .menu-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
 });
 
 // Scroll reveal
@@ -380,15 +336,14 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('visible');
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Параллакс для градиентных пятен
-window.addEventListener('mousemove', e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 30;
-  const y = (e.clientY / window.innerHeight - 0.5) * 30;
-  document.querySelector('.blob1').style.transform = `translate(${x}px, ${y}px)`;
-  document.querySelector('.blob2').style.transform = `translate(${-x}px, ${-y}px)`;
+// Параллакс на hero
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const big = document.querySelector('.hero .big');
+  if (big) big.style.transform = `translateY(${scrolled * 0.3}px)`;
 });
 </script>
 </body>
